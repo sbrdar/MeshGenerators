@@ -18,8 +18,9 @@ slavko.brdar@ecmwf.int,
 """
 
 # parameters
-ns = 2               # for healpix H<ns>
-sph_plot = True      # plot on sphere
+ns = 2                      # for healpix H<ns>
+sph_plot = True             # plot on sphere
+print_cell_indices = False  # print vertex indices of all elements
 
 
 pi = np.pi
@@ -147,12 +148,20 @@ for el in range(6*ns*ns-2*ns, 6*ns*ns+2*ns):
 # south belt & south cap for cells
 for el in range(6*ns*ns+2*ns, npix):
     el_vid[el,0] = npix + 1 - el_vid[npix-el-1,0]
-    el_vid[el,1] = npix + 1 - el_vid[npix-el-1,1]
-    el_vid[el,3] = npix + 1 - el_vid[npix-el-1,3]
+    el_vid[el,3] = npix + 1 - el_vid[npix-el-1,1]
+    el_vid[el,1] = npix + 1 - el_vid[npix-el-1,3]
     if( el_vid[npix-el-1,2] > 6*ns*ns-2*ns and el_vid[npix-el-1,2] <= 6*ns*ns+2*ns ):
         el_vid[el,2] = el_vid[npix-el-1,2]
     else:
         el_vid[el,2] = npix + 1 - el_vid[npix-el-1,2]
+
+
+# PRINT CELLS INDICES
+if (print_cell_indices):
+    for el in range(0, 12*ns*ns):
+        print("element ", int(el), " has vertex indices: ")
+        for vidx in range(0,4):
+            print(int(el_vid[el,vidx]))
 
 # PLOTTING
 
